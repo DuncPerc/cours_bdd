@@ -84,3 +84,100 @@ dossier1
 L'architecture du système démarre à la racine désignée par le symbole `/`.  
 Le chemin vers notre `fichier2` va donc être : `/dossier1/sousdossier1/fichier2`.  
 A noter que dans un système linux, l'extension de fichier (ex: `.txt`, `.xls`, `.pdf`, etc...) n'est pas obligatoire. On trouvera par exemple des fichiers sans extensions ou sans nom avant l'extension par exemple : `Dockerfile`, `.env` ou encore `.gitignore`
+
+---
+
+## 2. Premières commandes bash
+
+### `cd` — Change Directory
+But : se déplacer dans l’arborescence des dossiers.
+
+Exemples :
+```bash
+cd Documents
+```
+ -> Va dans le dossier Documents situé dans le répertoire courant.  
+
+<br>
+
+
+```bash
+cd /home/askia/projects
+```
+ -> Va directement dans le chemin absolu /home/askia/projects.  
+
+<br>
+
+
+```bash
+cd ..
+```
+ -> Remonte d’un niveau (vers le dossier parent). à noter que `..` designe le dossier parent et `.` le dossier actuel.  
+
+<br>
+
+
+```bash
+cd ~
+```
+ -> Retourne dans le dossier personnel de l’utilisateur.  
+
+<br>
+
+### `pwd` — Print Working Directory
+But : afficher le chemin complet du dossier dans lequel on se trouve actuellement.
+
+Exemple :
+```bash
+pwd
+```
+ -> Affiche quelque chose comme `/home/dossier1/sousdossier2`
+
+<br>
+
+### `ls` — List
+But : lister le contenu du dossier courant (fichiers et sous-dossiers).
+
+Exemples :
+```bash
+ls
+```
+-> Affiche les fichiers et dossiers du répertoire actuel.
+
+<br>
+
+```bash
+ls -l
+```
+-> Affiche les détails (droits, taille, date, propriétaire) de chaque élément.
+
+<br>
+
+```bash
+ls -a
+```
+-> Affiche aussi les fichiers cachés (commençant par .).
+
+<br>
+
+```bash
+ls /etc
+```
+-> Liste le contenu du dossier `/etc`.
+
+<br>
+
+### `touch` — Créer un fichier
+```bash
+touch exemple.txt
+```
+-> va créer un fichier `.txt` à l'emplacement courant(le fichier sera vide).
+
+<br>
+
+### Exercice rapide
+Combiner ces commandes pour :
+ - Se déplacer dans un dossier
+ - Créer un fichier (touch fichier.txt)
+ - Vérifier sa présence avec ls
+ - Afficher le chemin avec pwd
