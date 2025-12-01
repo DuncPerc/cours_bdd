@@ -75,9 +75,48 @@ CROSS JOIN produits p;
 
 --------------  REQUETES 3 SQL  --------------
 
+-- Compter le nombre de produits disponibles dans la table produits.
+-- V1 : comptage du nombre total de produits disponibles (stock total)
+SELECT SUM(STOCK) FROM produits 
+-- V2 : comptage du nombre de type de produits disponibles
+SELECT COUNT(*) FROM produits WHERE stock > 0
 
+-- Afficher le prix moyen des produits par catégorie (GROUP BY categorie).
+SELECT categorie, ROUND(AVG(prix),2) AS prix_moyen FROM produits GROUP BY categorie;
 
+-- Calculer le montant total de chaque commande (somme des quantite * prix_unitaire).
+SELECT commande_id, SUM(quantite*prix_unitaire) AS montant_total FROM lignes_commandes GROUP BY commande_id
 
+-- Afficher le client qui a passé le plus de commandes.
+-- Remarque : ici ce n'est pas le nom du client mais le nombre maximum de commandes passées par un client
+SELECT MAX(nb_commandes) AS nb_commandes_max 
+FROM (
+    SELECT c.nom, COUNT(co.commande_id) AS nb_commandes FROM commandes co, clients c
+    WHERE co.client_id = c.client_id
+    GROUP BY co.client_id, c.nom) AS comptage_commandes
+
+-- Calculer la somme des stocks disponibles par famille de produits.
+SELECT famille, SUM(stock) AS stocks FROM produits GROUP BY famille
+
+-- Afficher l’écart-type des prix des catégories des produits pour analyser la dispersion.
+SELECT categorie, STDDEV(prix) AS dispersion_prix FROM produits GROUP BY categorie;
+
+-- Calculer le montant total des ventes par client.
+SELECT client_id, SUM(lc.quantite*lc.prix_unitaire) AS montant_total FROM commandes co
+INNER JOIN lignes_commandes lc ON co.commande_id = lc.commande_id
+GROUP BY client_id
+ORDER BY montant_total DESC
+
+-- Afficher les commandes passées en 2025 et leur nombre.
+SELECT EXTRACT(YEAR FROM date_commande) AS annee, COUNT(*) AS nb_commandes
+FROM commandes
+GROUP BY annee
+
+-- Calculer le prix minimum, maximum et moyen des catégories de produits commandés.
+SELECT categorie, MAX(prix), MIN(prix), ROUND(AVG(prix),2) AS prix_moyen FROM produits GROUP BY categorie
+
+-- Afficher les produits dont le stock est un multiple de 5 (utiliser %).
+SELECT * FROM produits WHERE stock % 5 = 0;
 
 
 
