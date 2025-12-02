@@ -15,6 +15,9 @@ produits.produit_id ↔ lignes_commandes.produit_id
 |FULL OUTER JOIN	|SELECT ... FROM A FULL OUTER JOIN B ON A.id = B.id;|	Retourne toutes les lignes des deux tables, avec NULL si pas de correspondance|
 |CROSS JOIN	|SELECT ... FROM A CROSS JOIN B;|	Produit le produit cartésien (chaque ligne de A combinée avec chaque ligne de B)|
 
+<img src="images/jointures_sql.png" alt="Jointures" width="400" style="max-width:100%;height:auto;"> 
+
+
 ## 3. Exemples pratiques sur le schéma e‑commerce
 ### a) INNER JOIN : clients et commandes
 ```sql
