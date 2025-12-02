@@ -79,5 +79,56 @@ GROUP BY annee;
  - Afficher l’écart-type des prix des produits pour analyser la dispersion.
  - Calculer le montant total des ventes par client.
  - Afficher les commandes passées en 2025 et leur nombre.
- - Calculer le prix minimum, maximum et moyen des produits commandés.
+ - Calculer le prix minimum, maximum et moyen des categories commandés.
  - Afficher les produits dont le stock est un multiple de 5 (utiliser %).
+
+## Filtrer les Groupes avec HAVING
+La clause `HAVING` est l'un des concepts les plus subtils du SQL et est souvent confondue avec `WHERE`.  
+Il est crucial de comprendre que `HAVING` est utilisée pour filtrer les RESULTATS des fonctions d'agrégation (comme COUNT, SUM, AVG, etc.), tandis que `WHERE` filtre les lignes AVANT que l'agrégation ne se produise.
+
+### 1. Le rôle de HAVING
+HAVING filtre les groupes générés par la clause GROUP BY.
+
+ - `WHERE` -> Filtre les lignes individuelles avant le groupement.
+ - `GROUP BY` -> Aggrège les lignes restantes en groupes.
+ - `HAVING` -> Filtre les groupes en fonction d'un critère d'agrégation.
+
+### 2. Syntaxe et Ordre d'exécution
+La clause `HAVING` doit toujours suivre la clause `GROUP BY` dans la requête.
+```SQL
+SELECT
+    colonne_groupe,
+    fonction_aggregation(colonne)
+FROM
+    nom_table
+WHERE
+    condition_sur_lignes -- (Optionnel)
+GROUP BY
+    colonne_groupe
+HAVING
+    condition_sur_groupes; -- (Obligatoire pour filtrer les agrégats)
+ ```
+### 3. Exemple Pratique : Les Commandes Rares
+Supposons que nous ayons une table Commandes et que nous voulions identifier uniquement les clients ayant effectué moins de 3 commandes au total.
+
+Pour trouver les clients avec moins de 3 commandes :
+```SQL
+SELECT
+    id_client,
+    COUNT(id_client) AS nombre_commandes
+FROM
+    Commandes
+GROUP BY
+    id_client
+HAVING
+    COUNT(id_client) < 3;
+
+```
+ - `GROUP BY id_client` : Crée des groupes par client.
+ - `COUNT(id_client)` : Calcule le nombre de commandes pour chaque groupe.
+ - `HAVING COUNT(id_client) < 3`: Filtre les groupes où le décompte est inférieur à 3.
+
+# Exercices pratiques
+   1. Afficher les catégories de produits dont le prix moyen est supérieur à 800
+   2. Afficher les commandes dont le montant total (somme des quantités × prix unitaire) dépasse 1000.
+   3. Afficher les familles de produits dont le stock cumulé est inférieur à 50.
