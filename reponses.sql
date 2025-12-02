@@ -119,5 +119,108 @@ SELECT categorie, MAX(prix), MIN(prix), ROUND(AVG(prix),2) AS prix_moyen FROM pr
 SELECT * FROM produits WHERE stock % 5 = 0;
 
 
+-- Afficher les catégories de produits dont le prix moyen est supérieur à 800
+SELECT categorie, ROUND(AVG(prix),2) AS prix_moyen FROM produits GROUP BY categorie HAVING AVG(prix) > 800
+
+-- Afficher les commandes dont le montant total (somme des quantités × prix unitaire) dépasse 1000.
+SELECT commande_id, SUM(quantite*prix_unitaire) AS montant_total 
+FROM lignes_commandes 
+GROUP BY commande_id 
+HAVING SUM(quantite*prix_unitaire)>1000
+ORDER BY montant_total DESC
+
+-- Afficher les familles de produits dont le stock cumulé est inférieur à 50.
+SELECT famille, SUM(stock) as stocks 
+FROM produits 
+GROUP BY famille 
+HAVING SUM(stock)<50
+ORDER BY stocks ASC
+
 
 --------------  REQUETES 4 SQL  --------------
+
+-- Afficher les produits dont le prix est supérieur au prix moyen (sous‑requête).
+SELECT * 
+FROM produits
+WHERE prix > (SELECT AVG(prix) FROM produits)
+
+-- Afficher les clients qui ont passé au moins deux commandes (sous‑requête avec COUNT).
+-- ne fonctionne pas
+SELECT *
+FROM (
+    SELECT client_id, COUNT(DISTINCT(commande_id)) AS nb_commandes
+    FROM commandes 
+    GROUP BY client_id) AS tab
+WHERE nb_commandes > 2
+
+-- Afficher les commandes avec une colonne supplémentaire indiquant si elles sont "récentes" (après 2025‑01‑01) ou "anciennes" (avant).
+SELECT commande_id, statut, date_commande,
+       CASE
+           WHEN date_commande > '2025-01-01' THEN 'récentes'
+           ELSE 'anciennes'
+       END AS etat
+FROM commandes;
+
+-- Catégoriser les produits en trois classes de prix : bas, moyen, élevé (avec CASE).
+SELECT nom,
+       prix,
+       CASE
+           WHEN prix < 200 THEN 'Bas'
+           WHEN prix BETWEEN 200 AND 1000 THEN 'Moyen'
+           ELSE 'Cher'
+       END AS categorie_prix
+FROM produits;
+
+-- Afficher les clients avec une colonne indiquant "nouveau" si inscrits après 2024, sinon "ancien".
+SELECT *,
+    CASE
+        WHEN EXTRACT(YEAR FROM date_inscription)  > 2024 THEN 'nouveau'
+        ELSE 'ancien'
+    END AS statut_client
+FROM clients
+
+-- Afficher les produits commandés et ajouter une colonne "stock critique" si le stock est inférieur à 5.
+SELECT *,
+    CASE
+        WHEN stock < 5 THEN 'stock critique'
+        ELSE ''
+    END AS etat_stock
+FROM produits
+
+-- Utiliser une sous‑requête pour afficher le produit le plus cher commandé par chaque client.
+SELECT c.nom, p.nom, p.prix
+FROM clients c
+INNER JOIN commandes co ON c.client_id = co.client_id
+INNER JOIN lignes_commandes lc on co.commande_id = co.client_id
+INNER JOIN produits p ON lc.produit_id = p.produit_id;
+WHERE () -- A finir
+
+-- Afficher les commandes avec une colonne "statut détaillé" traduite en français (avec CASE).
+SELECT commande_id,
+       statut,
+       CASE statut
+           WHEN 'en cours' THEN 'Commande en préparation'
+           WHEN 'expédiée' THEN 'Commande en route'
+           WHEN 'livrée' THEN 'Commande terminée'
+           WHEN 'annulée' THEN 'Commande annulée'
+           ELSE 'Statut inconnu'
+       END AS statut_detail
+FROM commandes;
+
+-- Afficher les clients qui n’ont jamais passé de commande (sous‑requête avec NOT IN).
+SELECT * 
+FROM clients
+WHERE client_id NOT IN (
+    SELECT c.client_id 
+    FROM clients c
+    INNER JOIN commandes co ON c.client_id = co.client_id);
+
+-- Afficher les lignes de commande avec une colonne calculée "montant_total" et une classification : "petite commande" (<50), "moyenne" (50‑200), "grande" (>200)
+SELECT *,
+    CASE
+        WHEN montant_total < 500 THEN 'petite commande'
+        WHEN montant_total BETWEEN 500 AND 2000 THEN 'moyenne commande'
+        ELSE 'grande commande'
+    END AS classe_commande
+FROM (SELECT commande_id, SUM(quantite*prix_unitaire) AS montant_total FROM lignes_commandes GROUP BY commande_id) AS tab
+ORDER BY commande_id ASC
