@@ -39,7 +39,7 @@ CREATE TABLE etudiant (
     id SERIAL PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
     prenom VARCHAR(255) NOT NULL,
-    email VARCHAR(255) ,
+    email VARCHAR(255) UNIQUE,
     cursus_id INT REFERENCES cursus(id)
         ON DELETE SET NULL
 );
@@ -48,11 +48,12 @@ CREATE TABLE etudiant (
 -- Table emprunt
 CREATE TABLE emprunt (
     id SERIAL PRIMARY KEY,
-    date_emprunt DATE,
+    date_emprunt DATE NOT NULL,
     date_retour DATE,
-    livre_id INT REFERENCES livre(id),
+    livre_id INT REFERENCES livre(id)
+        ON DELETE CASCADE,
     etudiant_id INT REFERENCES etudiant(id)
-        ON DELETE SET NULL
+        ON DELETE CASCADE
 );
 
 INSERT INTO auteur(nom, prenom) VALUES
