@@ -55,4 +55,12 @@ CREATE TABLE emprunt (
         ON DELETE SET NULL
 );
 
+INSERT INTO auteur(nom, prenom) VALUES
+('Hugo', 'Victor'),
+('Austen', 'Jane'),
+('Camus', 'Albert');
 
+INSERT INTO livre(titre, annee_publication, auteur_id) VALUES
+('Les Misérables', 1862, 1),
+('Pride and Prejudice', 1813, 2),
+('L’Étranger', 1942,3);
