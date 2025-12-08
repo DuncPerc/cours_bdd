@@ -48,3 +48,9 @@ Docker utilise des images et des Dockerfiles.
 Python s’appuie sur des fichiers requirements.txt.
 
 -> L’avantage est de pouvoir instancier rapidement des environnements identiques, garantissant la reproductibilité et la portabilité des applications.
+
+## À retenir
+L’isolation est essentielle pour garantir la stabilité des applications et éviter les conflits entre environnements ou dépendances.  
+La virtualisation permet de créer des espaces dédiés : les machines virtuelles offrent un système complet mais lourd, tandis que les conteneurs Docker sont plus légers et partagent le noyau de l’hôte.  
+Les environnements virtuels Python gèrent les versions de librairies sans interférences.  
+Toutes ces solutions reposent sur le principe d’images reproductibles, assurant la cohérence, la portabilité et la reproductibilité des applications dans différents contextes.

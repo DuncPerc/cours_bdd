@@ -28,7 +28,7 @@ docker container run -it alpine sh
 ```
 -> Vous êtes maintenant dans un shell sh à l’intérieur du container Alpine. Testez quelques commandes (ls, pwd, echo).
 
-Pour voir les containers actifs :
+Ouvrez un deuxième terminal et vérifiez les containers actifs :
 ```bash
 docker container ls
 ```
@@ -161,4 +161,3 @@ Variables d’environnement
 Mode détaché
  - Lancez un container busybox en arrière-plan qui exécute sleep 30.
  - Vérifiez qu’il est actif avec docker container ls.
- - Arrêtez-le avant la fin avec docker container stop.

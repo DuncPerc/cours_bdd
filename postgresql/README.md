@@ -94,3 +94,52 @@ SELECT produit_id, SUM(quantite) FROM lignes_commandes GROUP BY produit_id;
 2. Dans "CONNECTIONS" juste à droite cliquer sur le logo "+SQL" New SQL file
 3. Ecrire la commande SQL exemple:`SELECT * FROM clients;` (ne pas oublier le ";" à la fin)
 4. Cliquer sur "Run on active connection" juste au dessus de la ligne de code
+
+
+## 6. Utiliser python pour requeter un bdd postgresql
+### Installer la librairie
+
+```bash
+pip install psycopg2-binary
+```
+(ou pip install psycopg[binary] pour psycopg3)
+
+### Écrire le script Python
+```bash
+vim script_python.py
+```
+
+puis copier dedans:
+```python
+import psycopg2
+
+# Connexion à la base
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    user="postgres",
+    password="postgres",
+    dbname="ecommerce"
+)
+
+# Création d’un curseur
+cur = conn.cursor()
+
+# Exécution de la requête
+cur.execute("SELECT * FROM clients;")
+
+# Récupération des résultats
+rows = cur.fetchall()
+for row in rows:
+    print(row)
+
+# Fermeture du curseur et de la connexion
+cur.close()
+conn.close()
+```
+
+### Executer le script Python
+```bash
+python script_python.py
+```
+

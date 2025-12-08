@@ -15,7 +15,7 @@ namespaces : qui isolent utilisateurs, réseau et processus.
 -> Lorsqu’un container démarre, il lance un processus. Quand ce processus s’arrête, le container disparaît.
 
 Exemple sous Linux  
-Un container peut exécuter un entraînement de modèle de Machine Learning en :
+Un container peut, par exemple, exécuter un entraînement de modèle de Machine Learning en :
  - attribuant des ressources spécifiques,
  - isolant le processus du système de fichiers hôte,
  - lui donnant son propre adressage réseau.
@@ -62,3 +62,28 @@ DockerHub : registre public par défaut.
 Trusted registries : registres privés, souvent utilisés en entreprise.
 
 -> Le fonctionnement des containers est assuré par le système Linux de la machine hôte (ou par une VM Linux si l’on travaille sous Windows).
+
+### 2.4 Objets principaux de Docker
+Les commandes Docker s’articulent principalement autour de trois types d’objets :
+
+Container : instance en cours d’exécution d’une image, isolant une application et ses dépendances.
+
+Image : modèle immuable servant de base pour créer des containers, construit en couches reproductibles. Peut-être créé de zero avec un Dockerfile ou téléchargé depuis dockerhub par exemple.
+
+Volume : espace de stockage persistant permettant de conserver et partager des données entre containers, indépendamment de leur cycle de vie.
+
+## Schéma de création d'un conteneur de zéro
+<img src="image/docker_build_run.png" alt="Buildrun" width="800" style="max-width:100%;height:auto;"> 
+
+## Schéma d'illustration d'utilisation d'un volume
+<img src="image/docker_volume.webp" alt="Volume" width="800" style="max-width:100%;height:auto;"> 
+
+## À retenir
+Les conteneurs permettent d’isoler une application avec ses dépendances en s’appuyant directement sur le système de la machine hôte, ce qui les rend plus légers et rapides que les machines virtuelles.  
+
+Les images Docker, construites en couches, servent de modèles reproductibles à partir desquels sont instanciés les containers.  
+
+Docker, a popularisé la containerisation grâce à sa simplicité, son écosystème (DockerHub, Dockerfiles, support cloud) et sa large communauté.  
+Son fonctionnement repose sur une architecture client‑serveur (docker‑cli et daemon) et sur des registries publics ou privés pour stocker et partager les images.
+
+Les commandes Docker s’articulent principalement autour de trois objets clés : **images**, **containers** et **volumes**, ces derniers assurant un stockage persistant entre les cycles de vie des containers.
